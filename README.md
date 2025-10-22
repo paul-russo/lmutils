@@ -9,7 +9,7 @@ Some useful (to me) little ZSH functions that wrap the LLM CLI.
 ## Installation
 
 ```zsh
-zinit light paul-russo/zfns
+zinit light paul-russo/lmutils
 ```
 
 ## Functions

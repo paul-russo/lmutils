@@ -13,7 +13,7 @@ This repository contains small ZSH utility scripts designed to be installed via 
 This repo follows zinit plugin conventions:
 - Functions should be in `.zsh` files in the root directory or organized in subdirectories
 - Zinit will source these files when the plugin is loaded
-- Users install with: `zinit light <username>/zfns`
+- Users install with: `zinit light paul-russo/lmutils`
 
 ### File Organization
 
