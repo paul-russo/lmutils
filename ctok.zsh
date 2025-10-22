@@ -28,6 +28,31 @@ ctok() {
     # Read stdin
     local input=$(cat)
 
+    # Show usage if no input provided
+    if [[ -z "$input" ]]; then
+        cat <<'EOF'
+Usage: ctok [OPTIONS]
+
+Count tokens in text using Anthropic's token counting API.
+Reads text from stdin.
+
+Options:
+  -m, --model MODEL    Specify model to count tokens for (fuzzy match)
+                       Default: claude-sonnet-4-5-20250929
+
+Examples:
+  echo "Hello world" | ctok
+  cat file.txt | ctok
+  ctok -m opus < input.txt
+  ctok --model haiku <<< "Short text"
+
+Requires:
+  - llm CLI tool with Anthropic API key set (llm keys set anthropic)
+  - jq for JSON processing
+EOF
+        return 0
+    fi
+
     # Get API key
     local api_key=$(llm keys get anthropic 2>/dev/null)
     if [[ -z "$api_key" ]]; then
