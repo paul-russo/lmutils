@@ -1,6 +1,10 @@
 # zfns
 
-Small ZSH utility scripts designed to be installed via zinit.
+Some useful (to me) little ZSH functions that wrap the LLM CLI.
+
+## Prerequisites
+- [llm](https://github.com/simonw/llm) tool installed (with Anthropic API key set if you want to use `ctok`)
+- [jq](https://github.com/jqlang/jq) for JSON processing
 
 ## Installation
 
@@ -33,10 +37,6 @@ ctok -m opus < input.txt
 ctok --model haiku <<< "Short text"
 ```
 
-**Requirements:**
-- llm CLI tool with Anthropic API key set (`llm keys set anthropic`)
-- jq for JSON processing
-
 ### gvc
 
 AI-powered git commit with automatic message generation (vibe commit).
@@ -57,7 +57,3 @@ git add .
 gvc                  # Generate message, commit, and push
 gvc --no-push        # Generate message and commit without pushing
 ```
-
-**Requirements:**
-- llm CLI tool
-- Staged git changes
