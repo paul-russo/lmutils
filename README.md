@@ -36,3 +36,28 @@ ctok --model haiku <<< "Short text"
 **Requirements:**
 - llm CLI tool with Anthropic API key set (`llm keys set anthropic`)
 - jq for JSON processing
+
+### gvc
+
+AI-powered git commit with automatic message generation (vibe commit).
+
+**Usage:**
+```
+gvc [OPTIONS]
+```
+
+Generates a commit message for staged changes using AI, prompts for approval, commits, and pushes.
+
+**Options:**
+- `--no-push` - Skip the git push step after committing
+
+**Examples:**
+```zsh
+git add .
+gvc                  # Generate message, commit, and push
+gvc --no-push        # Generate message and commit without pushing
+```
+
+**Requirements:**
+- llm CLI tool
+- Staged git changes
