@@ -25,10 +25,13 @@ ctok() {
         fi
     fi
 
-    # Read stdin
-    local input=$(cat)
+    # Check if stdin is a terminal (no pipe) or if we should read from stdin
+    local input=""
+    if [[ ! -t 0 ]]; then
+        input=$(cat)
+    fi
 
-    # Show usage if no input provided
+    # Show usage if no input
     if [[ -z "$input" ]]; then
         cat <<'EOF'
 Usage: ctok [OPTIONS]
