@@ -1,4 +1,4 @@
-# zfns
+# lmutils
 
 Some useful (to me) little ZSH functions that wrap the LLM CLI.
 
