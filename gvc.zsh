@@ -24,15 +24,29 @@ gvc() {
   fi
 
   # Display message and prompt for approval
-  echo "\nSuggested commit message:"
-  echo "  $message"
-  echo -n "\nCommit with this message? (y/n): "
-  read -r response
+  while true; do
+    echo "\nSuggested commit message:"
+    echo "  $message"
+    echo -n "\nCommit with this message? (y/n/e): "
+    read -r response
 
-  if [[ "$response" != "y" ]]; then
-    echo "Commit aborted"
-    return 0
-  fi
+    if [[ "$response" == "n" ]]; then
+      echo "Commit aborted"
+      return 0
+    elif [[ "$response" == "e" ]]; then
+      local tmpfile
+      tmpfile=$(mktemp)
+      echo "$message" > "$tmpfile"
+      ${EDITOR:-vi} "$tmpfile"
+      message=$(cat "$tmpfile")
+      rm "$tmpfile"
+      # Continue loop to show new message and prompt again
+    elif [[ "$response" == "y" ]]; then
+      break
+    else
+      echo "Please answer y, n, or e."
+    fi
+  done
 
   # Commit
   git commit -m "$message"
