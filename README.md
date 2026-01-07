@@ -57,3 +57,19 @@ git add .
 gvc                  # Generate message, commit, and push
 gvc --no-push        # Generate message and commit without pushing
 ```
+
+### huh
+
+Summarize the contents of a file using AI.
+
+**Usage:**
+```
+huh <file>
+```
+
+**Examples:**
+```zsh
+huh README.md
+huh src/main.py
+huh ~/Documents/notes.txt
+```
