@@ -60,16 +60,19 @@ gvc --no-push        # Generate message and commit without pushing
 
 ### huh
 
-Summarize the contents of a file using AI.
+Summarize the contents of one or more files using AI.
 
 **Usage:**
 ```
-huh <file>
+huh <file> [file...]
 ```
+
+When multiple files are provided, outputs an overall summary followed by individual summaries for each file under headers.
 
 **Examples:**
 ```zsh
 huh README.md
 huh src/main.py
-huh ~/Documents/notes.txt
+huh *.zsh
+huh src/api.py src/models.py src/utils.py
 ```
