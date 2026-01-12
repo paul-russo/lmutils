@@ -27,13 +27,17 @@ gvc() {
   while true; do
     echo "\nSuggested commit message:"
     echo "  $message"
-    echo -n "\nCommit with this message? (y/n/e): "
+    echo -n "\nCommit with this message? (\033[1my\033[0mes/\033[1mn\033[0mo/\033[1me\033[0mdit): "
     read -r response
 
-    if [[ "$response" == "n" ]]; then
+    # Get first character of response (case-insensitive)
+    local first_char="${response:0:1}"
+    first_char="${first_char:l}"  # Convert to lowercase
+
+    if [[ "$first_char" == "n" ]]; then
       echo "Commit aborted"
       return 0
-    elif [[ "$response" == "e" ]]; then
+    elif [[ "$first_char" == "e" ]]; then
       local tmpfile
       tmpfile=$(mktemp)
       echo "$message" > "$tmpfile"
@@ -41,10 +45,10 @@ gvc() {
       message=$(cat "$tmpfile")
       rm "$tmpfile"
       # Continue loop to show new message and prompt again
-    elif [[ "$response" == "y" ]]; then
+    elif [[ "$first_char" == "y" ]]; then
       break
     else
-      echo "Please answer y, n, or e."
+      echo "Please answer yes, no, or edit."
     fi
   done
 
