@@ -99,3 +99,28 @@ ado convert a video to mp4 format
 ado list all running docker containers
 ado --no-run resize an image to half size
 ```
+
+### qq
+
+Quick query tool - a lightweight wrapper around llm that makes it easy to ask questions without wrapping input in quotes. Automatically instructs the model to provide concise responses.
+
+**Usage:**
+```
+qq [OPTIONS] <message>
+```
+
+Takes all arguments as a single message and passes them to llm with a system prompt requesting concise responses.
+
+**Options:**
+- `--model MODEL` - Specify the model to use
+- `--system PROMPT` - Override the default system prompt
+
+**Examples:**
+```zsh
+qq explain how git rebase works
+qq what is the difference between map and filter in javascript
+qq write a function to sort an array
+qq --model gpt-5.2 explain quantum computing
+qq --model claude-opus-4.5 explain recursion
+qq --system "Be verbose and detailed" explain how git works
+```
