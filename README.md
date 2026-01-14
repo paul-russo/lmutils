@@ -76,3 +76,26 @@ huh src/main.py
 huh *.zsh
 huh src/api.py src/models.py src/utils.py
 ```
+
+### ado
+
+Generate a command suggestion based on a natural language request using AI.
+
+**Usage:**
+```
+ado [OPTIONS] <request>
+```
+
+Takes a natural language description and suggests an appropriate command to accomplish the task. If multiple valid approaches exist, all options will be presented for selection. By default, the selected command will be executed after confirmation.
+
+**Options:**
+- `--no-run` - Print the command instead of running it
+
+**Examples:**
+```zsh
+ado resize an image to half size
+ado find all python files modified in the last week
+ado convert a video to mp4 format
+ado list all running docker containers
+ado --no-run resize an image to half size
+```
