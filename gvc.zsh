@@ -42,6 +42,8 @@ EOF
   local -a _lm_cmd=(${=LMUTILS_CMD:-agent -p})
   local system_prompt="Provide a one-line commit message for the following staged changes. Wrap your suggested commit message in <message> tags so it can be extracted.
 
+Do not make any tool calls or perform any searches unless absolutely necessary to create a good commit message. Respond quickly using only the diff provided.
+
 Example:
 <message>Add user authentication module</message>"
   local response
