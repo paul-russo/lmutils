@@ -10,17 +10,17 @@ qq() {
                 cat <<'EOF'
 Usage: qq [OPTIONS] <message>
 
-Quick query tool - a lightweight wrapper around llm that makes it easy to ask questions
-without wrapping input in quotes. The tool automatically instructs the model to provide
-concise responses.
+Quick query tool - a lightweight wrapper around an command-line agent that makes it easy to ask
+questions without wrapping input in quotes. The tool automatically instructs the model
+to provide concise responses.
 
 Arguments:
   message    Your question or request (all arguments are joined together)
 
 Options:
   -h, --help           Show this help message
-  --model MODEL        Specify the model to use
-  --system PROMPT      Override the default system prompt
+  --model MODEL        Pass through to command-line agent if supported (e.g., llm)
+  --system PROMPT      Override the default system prompt (prepended to message)
 
 Examples:
   qq explain how git rebase works
@@ -31,7 +31,7 @@ Examples:
   qq --system "Be verbose and detailed" explain how git works
 
 Requires:
-  - llm CLI tool with an API key configured
+  - command-line agent (default: agent -p). Override with LMUTILS_CMD (e.g., "llm")
 EOF
                 return 0
                 ;;
@@ -73,12 +73,12 @@ EOF
     # Join all arguments into a single message
     local message="${args[*]}"
     
-    # Build llm command arguments
-    local -a llm_args=("--system" "$system_prompt")
+    # Prepend system prompt
+    local -a _lm_cmd=(${=LMUTILS_CMD:-agent -p})
+    local -a llm_args=()
     if [[ -n "$model" ]]; then
         llm_args+=("--model" "$model")
     fi
     
-    # Call LLM with system prompt and user message
-    echo "$message" | llm "${llm_args[@]}"
+    printf '%s\n\n%s' "$system_prompt" "$message" | "${_lm_cmd[@]}" "${llm_args[@]}"
 }

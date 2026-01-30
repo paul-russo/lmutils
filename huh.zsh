@@ -26,7 +26,7 @@ Examples:
   huh src/api.py src/models.py src/utils.py
 
 Requires:
-  - llm CLI tool with an API key configured
+  - command-line agent (default: agent -p). Override with LMUTILS_CMD (e.g., "llm")
 EOF
                 return 0
                 ;;
@@ -61,10 +61,12 @@ EOF
         fi
     done
 
-    # Single file case - simpler prompt
+    # Single file case - simpler prompt (prepend)
     if [[ ${#files[@]} -eq 1 ]]; then
+        local -a _lm_cmd=(${=LMUTILS_CMD:-agent -p})
         local filename=$(basename "${files[1]}")
-        cat "${files[1]}" | llm --system "Summarize the following file ($filename). Provide a concise summary of what this file contains, its purpose, and key details. Keep the summary brief but informative."
+        local system_prompt="Summarize the following file ($filename). Provide a concise summary of what this file contains, its purpose, and key details. Keep the summary brief but informative."
+        { echo "$system_prompt"; echo; cat "${files[1]}" } | "${_lm_cmd[@]}"
         return 0
     fi
 
@@ -87,12 +89,14 @@ EOF
 "
     done
 
-    # Summarize with multi-file prompt
-    echo "$combined" | llm --system "You are summarizing multiple files. The files are:
+    # Summarize with multi-file prompt (prepend)
+    local -a _lm_cmd=(${=LMUTILS_CMD:-agent -p})
+    local system_prompt="You are summarizing multiple files. The files are:
 $file_list
 First, provide an **Overall Summary** that describes the common themes, patterns, or relationships between these files.
 
 Then, provide individual summaries for each file under a markdown header with the filename (e.g., ## filename.ext).
 
 Keep summaries concise but informative."
+    { echo "$system_prompt"; echo; echo "$combined" } | "${_lm_cmd[@]}"
 }

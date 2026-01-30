@@ -7,7 +7,7 @@ ado() {
         case $1 in
             -h|--help)
                 cat <<'EOF'
-Usage: ado <request>
+Usage: ado [OPTIONS] <request>
 
 Generate a command suggestion based on a natural language request using AI.
 
@@ -29,7 +29,7 @@ Examples:
   ado --no-run resize an image to half size
 
 Requires:
-  - llm CLI tool with an API key configured
+  - command-line agent (default: agent -p). Override with LMUTILS_CMD (e.g., "llm")
 EOF
                 return 0
                 ;;
@@ -59,7 +59,7 @@ EOF
     # Join all arguments into a single request string
     local request="${args[*]}"
 
-    # System prompt instructing the LLM to wrap the command in XML tags
+    # System prompt instructing the agent to wrap the command in XML tags
     local system_prompt="You are a command-line assistant. The user will describe what they want to do, and you should suggest an appropriate command to accomplish that task. 
 
 Your response should contain ONLY the suggested command(s) wrapped in <suggestion> tags. Do not include any explanation, commentary, or additional text outside the tags.
@@ -77,9 +77,10 @@ Example format (multiple suggestions):
 
 If the request is unclear or ambiguous, provide the most likely command(s) the user wants, still wrapped in <suggestion> tags with description attributes."
 
-    # Call LLM with system prompt and user request
+    # Call command-line agent with system prompt prepended
+    local -a _lm_cmd=(${=LMUTILS_CMD:-agent -p})
     local response
-    response=$(echo "$request" | llm --system "$system_prompt")
+    response=$(printf '%s\n\n%s' "$system_prompt" "$request" | "${_lm_cmd[@]}")
 
     if [[ $? -ne 0 ]] || [[ -z "$response" ]]; then
         echo "Error: Failed to generate command suggestion" >&2
